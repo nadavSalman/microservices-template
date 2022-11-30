@@ -1,15 +1,15 @@
 from flask import Blueprint, jsonify, request
 
-
 database = []
 
+# POST /{resource_type} - to create an instance of the resource
+# GET /{resource_type} - to get all instances of a given resource type
 # GET /{resource_type}/<resource_id> - get a specific instance
 # DELETE /{resource_type}/<resource_id> - delete a specific instance of a resource
 # POST /{resource_type}/<resource_id>/allocations - create an allocation for this resource instance
 # GET /{resource_type}/<resource_id>/allocations - get all allocations for this resource instance
 # GET /{resource_type}/<resource_id>/allocations/<allocation_id> - get a specific allocation
 # DELETE /{resource_type}/<resource_id>/allocations/<allocation_id> - delete the allocation
-
 
 def create_continuous_resource_blueprint(blueprint_name: str, resource_type: str, resource_prefix: str) -> Blueprint:
     """
@@ -19,20 +19,39 @@ def create_continuous_resource_blueprint(blueprint_name: str, resource_type: str
     """
     blueprint = Blueprint(blueprint_name, __name__)
 
-    # POST /{resource_type} - to create an instance of the resource
     @blueprint.route(f'/{resource_prefix}', methods=["POST"])
     def create_resource():
         #database.append()
         database.append({"type":request.get_json()["type"],"price":request.get_json()["price"]})
         return jsonify({}), 201
     
-    # GET /{resource_type} - to get all instances of a given resource type
     @blueprint.route(f'/{resource_prefix}', methods=["GET"])
     def get_resources():
         #return jsonify({}), 201
         return jsonify(database), 201
+    
+    @blueprint.route(f'/{resource_prefix}', methods=["GET"])
+    def get_resource():
+        return jsonify({}), 201
+        
+    @blueprint.route(f'/{resource_prefix}',methods=["DELETE"])
+    def delete_resources():
+        return jsonify({}), 201
 
-    # We then do this for all the other endpoints we listed
-    # ...
+    @blueprint.route(f'/{resource_prefix}',methods=["POST"])
+    def create_allocation():
+        return jsonify({}), 201
+
+    @blueprint.route(f'/{resource_prefix}',methods=["GET"])
+    def get_allocations():
+        return jsonify({}), 201
+
+    @blueprint.route(f'/{resource_prefix}',methods=["GET"])
+    def get_allocations():
+        return jsonify({}), 201
+
+    @blueprint.route(f'/{resource_prefix}',methods=["DELETE"])
+    def delete_allocation():
+        return jsonify({}), 201
 
     return blueprint
